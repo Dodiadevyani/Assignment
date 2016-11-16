@@ -2,7 +2,7 @@ import pandas as pd
 import csv
 
 # Reading weather file of .csv format
-Reading_weatherfile= pd.read_csv ("kisanhub.csv",index_col=['record_ts'],parse_dates=['record_ts'])
+Reading_weatherfile= pd.read_csv ("kisanhub.csv",index_col=['record_ts'],parse_dates=True)
 
 # To find missing values using Linear Interpolation method
 def Finding_MissingWeatherData (Weatherfile, Starting_Year, Final_Year):
