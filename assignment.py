@@ -1,29 +1,37 @@
 import pandas as pd
 import csv
 
-# Reading weather file of .csv format
+# Reading weather dataframe of .csv format
 def reading_weather_dataframe():
     return pd.read_csv ("kisanhub.csv",index_col=['record_ts'],parse_dates=True)
 
 # To find missing values using Linear Interpolation method
 def finding_missing_data (weather_dataframe, starting_date, final_date):
+    # convert  string of starting date to datetime format 
     starting_date= convert_stringto_datetime(starting_date)
     print type(starting_date)
     print starting_date
+    # convert  string of final date to datetime format 
     final_date= convert_stringto_datetime(final_date)
     print type(final_date)
     print final_date
+    # it gives date range from starting date to final date with hourly frequency
     daterange= pd.date_range(starting_date, final_date,freq='H')
     print type(daterange)
+    # reindex the whole dataframe by placing "NaN" in locations having no value in the previous index.
     reindex_weather_dataframe= weather_dataframe.reindex(daterange, fill_value="Nan")
     print type( reindex_weather_dataframe)
+    # convert datatype of dataframe to float
     convert_datatype=reindex_weather_dataframe.astype(float)
     print type( convert_datatype)
     print convert_datatype
+    # calculate missing values where "Nan" is located, using linear interpolation method
     corrected_weather_dataframe=convert_datatype.interpolate(method='linear')
     return corrected_weather_dataframe
     print type( corrected_weather_dataframe)
- 
+    # get corrected weathere dataframe 
+    
+    
 # To resample data sets in 24hours group
 def resample_dataframe(dataframe):
     return dataframe.resample('24H')
@@ -43,16 +51,20 @@ def mean_temp(maximum_temp, minimum_temp):
 # For Users to give Planting and Harvesting date of crop
 def user_planting_date():
     try:
+        # if planting date is in correct format, it convert string of planting date to datetime format 
         return convert_stringto_datetime(raw_input("Planting date of a crop: "))
     except ValueError:
-        print "Please follow dd/mm/year or year/mm/dd format"
+        # if planting date is not in format, give error message with one more chance to input planting date
+        print "Error: Please follow dd/mm/year or year/mm/dd format"
         planting_date= user_planting_date()
 
 def user_harvesting_date():
     try:
+        # if harvesting date is in correct format, it convert string of harvesting date to datetime format
         return convert_stringto_datetime(raw_input("Harvesting date of a crop: "))
     except ValueError:
-        print "Please follow dd/mm/year or year/mm/dd format"
+         # if harvesting date is not in format, give error message with one more chance to input harvesting date
+        print "Error: Please follow dd/mm/year or year/mm/dd format"
         harvesting_date= user_harvesting_date()
 
 # To convert string into time format
@@ -62,15 +74,21 @@ def convert_stringto_datetime(string):
 # For users to defined base temperature for a crop
 def user_base_temp():
     try:
-         return float(raw_input("Base temperature is "))
+        # if base temperature is number, then it convert number to float
+        return float(raw_input("Base temperature is "))
     except ValueError:
-        print "Please give numbers only"
+        # if base temperature is not number, then give error with chance to input base temperature 
+        print "Error: Please give numbers only"
         base_Temp= user_base_temp()
-        
+
+# to calculate growth duration of crop using growth_durationof_crop function
+def growth_durationof_crop(planting_date, harvesting_date,freq='D'):
+    return pd.date_range(planting_date, harvesting_date,freq='D')
+    print growth_duration_crop
+    print type(growth_durationof_crop)
 
 
-
-
+# first read kisanhub.csv weather file using reading_weather_dataframe function and print weather dataframe
 print "Weather data of kisanhub.csv file is: " 
 weather_dataframe= reading_weather_dataframe ()
 print weather_dataframe
@@ -78,45 +96,51 @@ print weather_dataframe.dtypes
 print type(weather_dataframe)
 
 print "After calculating missing weather data using linear interpolation method, Corrected weather data is:  "
-
+# calculate missing weather data using finding_missing_data function and print corrected weather dataframe
 corrected_weather_dataframe= finding_missing_data (weather_dataframe, "01/01/2014", "31/05/2016")
 print corrected_weather_dataframe 
 print corrected_weather_dataframe.dtypes
 print type( corrected_weather_dataframe)
 
+# to get daily dataframe from hourly weather dataframe resampling done using resample_dataframe function
 resample_data= resample_dataframe( corrected_weather_dataframe)
 print resample_data
 print type( resample_data)
 
 print "Daily maximum temperature of given time series:  "
-
+# to get daily maximum temperature of given datetime series maximum_temp function used
 max_temp=  maximum_temp(resample_data)
 print max_temp
 print max_temp.dtypes
 print type( max_temp)
 
 print "Daily minimum temperature of given time series:  "
-
+# daily minimum temperature get using minimum_temp function
 min_temp= minimum_temp(resample_data)
 print min_temp
 print min_temp.dtypes
 print type(min_temp)
 
 print "Daily mean temperature of given time series:  "
-
+# to get daily mean temperature of given datetime series mean_temp function used
 meantemp=mean_temp(max_temp, min_temp)
 print meantemp
 print meantemp.dtypes
 print type(meantemp)
 
+# user can input planting date and convert it in correct datetime format using user_planting_date function
 planting_date= user_planting_date()
-print planting_date
+print planting_date.date
 print type(planting_date)
+# user can input harvesting date and convert it in correct datetime format using user_harvesting_date function
 harvesting_date= user_harvesting_date()
 print harvesting_date
 print type(harvesting_date)
+# user can input base temperature using user_base_temp function
 base_temp= user_base_temp()
 print base_temp
 print type(base_temp)
+
+
 
 
