@@ -50,21 +50,23 @@ def mean_temp(maximum_temp, minimum_temp):
 
 # For Users to give Planting and Harvesting date of crop
 def user_planting_date():
+    print "Planting Date of crop is : "
     try:
         # if planting date is in correct format, it convert string of planting date to datetime format 
-        return convert_stringto_datetime(raw_input("Planting date of a crop: "))
+        return datetime.date(int(raw_input("Year: ")),int(raw_input("Month: ")),int(raw_input("Day: ")))
     except ValueError:
         # if planting date is not in format, give error message with one more chance to input planting date
-        print "Error: Please follow dd/mm/year or year/mm/dd format"
+        print "Error: Please follow Year-Month-Day in integer format. Try again"
         planting_date= user_planting_date()
 
 def user_harvesting_date():
+    print "Harvesting Date of crop is : "
     try:
         # if harvesting date is in correct format, it convert string of harvesting date to datetime format
-        return convert_stringto_datetime(raw_input("Harvesting date of a crop: "))
+        return datetime.date(int(raw_input("Year: ")),int(raw_input("Month: ")),int(raw_input("Day: ")))
     except ValueError:
          # if harvesting date is not in format, give error message with one more chance to input harvesting date
-        print "Error: Please follow dd/mm/year or year/mm/dd format"
+        print"Error: Please follow Year-Month-Day in integer format. Try again"
         harvesting_date= user_harvesting_date()
 
 # To convert string into time format
@@ -125,17 +127,21 @@ print "Daily mean temperature of given time series:  "
 # to get daily mean temperature of given datetime series mean_temp function used
 meantemp=mean_temp(max_temp, min_temp)
 print meantemp
+print meantemp.index
+#print meantemp['20140102':'20140104']
+#print meantemp[:1]
 print meantemp.dtypes
 print type(meantemp)
 
 # user can input planting date and convert it in correct datetime format using user_planting_date function
 planting_date= user_planting_date()
-print planting_date.date
-print type(planting_date)
+print planting_date
+print type (planting_date)
 # user can input harvesting date and convert it in correct datetime format using user_harvesting_date function
 harvesting_date= user_harvesting_date()
 print harvesting_date
-print type(harvesting_date)
+print type( harvesting_date)
+
 # user can input base temperature using user_base_temp function
 base_temp= user_base_temp()
 print base_temp
@@ -143,11 +149,10 @@ print type(base_temp)
 
 # to calculate growth duration of crop growth_durationof_crop function used
 growing_duration= growth_durationof_crop(planting_date, harvesting_date,freq='D')
+#print meantemp.loc[meantemp.index[0:].date==harvesting_date,: ]
 # reindex meantemperature for crop growth duration, reindex function used
 growingtime_meantemp= meantemp.reindex(growing_duration)
 print "During crop growth, mean temperature is: "
 print growingtime_meantemp
 print growingtime_meantemp.dtypes
 print type(growingtime_meantemp)
-
-
