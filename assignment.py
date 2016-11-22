@@ -31,7 +31,11 @@ def finding_missing_data (weather_dataframe, starting_date, final_date):
     print type( corrected_weather_dataframe)
     # get corrected weathere dataframe 
     
-    
+# To convert string into time format
+def convert_stringto_datetime(string):
+    return pd.to_datetime(string)
+
+
 # To resample data sets in 24hours group
 def resample_dataframe(dataframe):
     return dataframe.resample('24H')
@@ -105,10 +109,6 @@ def user_harvesting_date():
          # if harvesting date is not in format, give error message with one more chance to input harvesting date
         print"Error: Please follow Year-Month-Day in integer format. Try again"
         harvesting_date= user_harvesting_date()
-
-# To convert string into time format
-def convert_stringto_datetime(string):
-    return pd.to_datetime(string)
 
 # For users to defined base temperature for a crop
 def user_base_temp():
