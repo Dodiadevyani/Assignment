@@ -149,7 +149,7 @@ print type(base_temp)
 
 # to calculate growth duration of crop growth_durationof_crop function used
 growing_duration= growth_durationof_crop(planting_date, harvesting_date,freq='D')
-#print meantemp.loc[meantemp.index[0:].date==harvesting_date,: ]
+
 # reindex meantemperature for crop growth duration, reindex function used
 growingtime_meantemp= meantemp.reindex(growing_duration)
 print "During crop growth, mean temperature is: "
