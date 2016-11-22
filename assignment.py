@@ -86,8 +86,36 @@ def user_base_temp():
 # to calculate growth duration of crop using growth_durationof_crop function
 def growth_durationof_crop(planting_date, harvesting_date,freq='D'):
     return pd.date_range(planting_date, harvesting_date,freq='D')
-    print growth_duration_crop
-    print type(growth_durationof_crop)
+
+# to calculate growing_degree_days
+def growing_degree_days(base_temp, meantemp,planting_date, harvesting_date,freq='D'):
+    # to calculate growth duration of crop growth_durationof_crop function used
+    growing_duration= growth_durationof_crop(planting_date, harvesting_date,freq='D')
+    print growing_duration
+    print type(growing_duration)
+    # reindex meantemperature for crop growth duration, reindex function used
+    growingtime_meantemp= meantemp.reindex(growing_duration)
+    # if mean temp is lower than base temp, replace it with base temp, because crop can not grow below base temp.
+    growingtime_meantemp.value=growingtime_meantemp.value.where(growingtime_meantemp.value>= base_temp)
+    print "mean temperature in growing duration of crop is: "
+    print growingtime_meantemp
+    print growingtime_meantemp.dtypes
+    print type(growingtime_meantemp)
+    growingtime_meantemp['value']=growingtime_meantemp['value'].replace(['NaN'], base_temp)
+    print growingtime_meantemp
+    # to calculate each days contribution to GDD
+    eachday_gdd_contribution=growingtime_meantemp-base_temp
+    print "each day contribution to growing degree days is: "
+    print eachday_gdd_contribution
+    print type(eachday_gdd_contribution)
+    print eachday_gdd_contribution.dtypes
+    # for a particular crop growing degree days is
+    growing_degree_days= eachday_gdd_contribution.cumsum()
+    print growing_degree_days
+    print type(growing_degree_days)
+    print growing_degree_days.dtypes
+    print "growing degree days is "
+    print growing_degree_days.tail(1)
 
 
 # first read kisanhub.csv weather file using reading_weather_dataframe function and print weather dataframe
@@ -147,12 +175,6 @@ base_temp= user_base_temp()
 print base_temp
 print type(base_temp)
 
-# to calculate growth duration of crop growth_durationof_crop function used
-growing_duration= growth_durationof_crop(planting_date, harvesting_date,freq='D')
+growing_degree_days= growing_degree_days(base_temp, meantemp,planting_date, harvesting_date,freq='D')
 
-# reindex meantemperature for crop growth duration, reindex function used
-growingtime_meantemp= meantemp.reindex(growing_duration)
-print "During crop growth, mean temperature is: "
-print growingtime_meantemp
-print growingtime_meantemp.dtypes
-print type(growingtime_meantemp)
+
