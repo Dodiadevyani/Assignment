@@ -141,6 +141,13 @@ base_temp= user_base_temp()
 print base_temp
 print type(base_temp)
 
-
+# to calculate growth duration of crop growth_durationof_crop function used
+growing_duration= growth_durationof_crop(planting_date, harvesting_date,freq='D')
+# reindex meantemperature for crop growth duration, reindex function used
+growingtime_meantemp= meantemp.reindex(growing_duration)
+print "During crop growth, mean temperature is: "
+print growingtime_meantemp
+print growingtime_meantemp.dtypes
+print type(growingtime_meantemp)
 
 
