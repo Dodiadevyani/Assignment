@@ -1,6 +1,7 @@
 import pandas as pd
 import csv
 import datetime
+import matplotlib.pyplot as plt
 
 # Reading weather dataframe of .csv format
 def reading_weather_dataframe():
@@ -173,5 +174,7 @@ print base_temp
 print type(base_temp)
 # finally to calculate growing degree days, growing_degree_days function used with its parameters.
 growing_degree_days= growing_degree_days(base_temp, meantemp,planting_date, harvesting_date,freq='D')
-
+# to plot graph between growing degree days with respect to time
+growing_degree_days.plot.line(y='value', use_index=True, title='Growing degree days')
+plt.show()
 
