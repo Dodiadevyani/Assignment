@@ -1,13 +1,7 @@
-
-# coding: utf-8
-
-# In[69]:
-
 import pandas as pd
 import csv
 import datetime
 import matplotlib.pyplot as plt
-
 
 class weatherdata_from_file:
     def reading_weather_dataframe(self):
@@ -76,7 +70,6 @@ class growing_degree_days_calculator:
         self.meantemp= meantemp
         self.planting_date= planting_date
         self.harvesting_date= harvesting_date
-     
      def growing_degree_days(self):
         growing_duration= pd.date_range(self.planting_date,self.harvesting_date,freq='D')
         # reindex meantemperature for crop growth duration, reindex function used
@@ -89,8 +82,7 @@ class growing_degree_days_calculator:
         # for a particular crop growing degree days is
         growing_degree_days= eachday_gdd_contribution.cumsum()
         return growing_degree_days
-    
-    
+
 class gdd_time_graph_plotting:
     def __init__(self,growing_degree_days):
         self.growing_degree_days= growing_degree_days
@@ -98,8 +90,7 @@ class gdd_time_graph_plotting:
     # plot graph of growing degree days with respect to time
         growing_degree_days.plot.line(y='value', use_index=True, title='Growing degree days')
         plt.show()
-        
-        
+         
 weather_dataframe=weatherdata_from_file().reading_weather_dataframe()         
 corrected_weather_dataframe= filling_missing_data(weather_dataframe).missingvalue_of_dataframe()
 resample_dataframe= mean_calculator(corrected_weather_dataframe).resample_dataframe()
