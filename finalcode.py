@@ -1,8 +1,3 @@
-
-# coding: utf-8
-
-# In[13]:
-
 import pandas as pd
 import csv
 import datetime
